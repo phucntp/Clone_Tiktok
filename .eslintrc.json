@@ -1,30 +1,28 @@
 {
-    "env": {
-      "commonjs": true,
-      "es6": true,
-      "node": true
-    },
-    "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaVersion": 2020
-    },
-    "plugins": ["prettier"],
-    "rules": {
-      "prettier/prettier": "error",
-      "no-unused-vars": "warn",
-      "no-console": "off",
-      "func-names": "off",
-      "no-plusplus": "off",
-      "no-process-exit": "off",
-      "class-methods-use-this": "off",
-      "import/prefer-default-export": "off",
-      "import/extensions": "off",
-      "no-underscore-dangle": "off",
-      "node/no-unsupported-features/es-syntax": "off"
-    }
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "prettier"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "func-names": "off",
+    "no-plusplus": "off",
+    "no-process-exit": "off",
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "node/no-unsupported-features/es-syntax": "off"
   }
-  
+}
