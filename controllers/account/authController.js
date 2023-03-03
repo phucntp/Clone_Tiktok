@@ -16,7 +16,7 @@ const handleLogin = asyncHandler(async (req, res) => {
     if(user && (await user.matchPassword(password))) {
       user.refreshToken = refreshToken(user._id)
       await user.save()
-      res.cookie('jwt', refreshToken(user._id), {secure: true, sameSite: 'None'})
+      res.cookie('jwt', refreshToken(user._id), {httpOnly: true,secure: true, sameSite: 'None'})
       res.json({accessToken: accessToken(user._id)})
     }else {
       res.sendStatus(401)

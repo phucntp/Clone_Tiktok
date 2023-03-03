@@ -15,7 +15,7 @@ const corsOptions = require('./config/corsOptions');
 dotenv.config()
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.set('strictQuery', false);
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/users', userRouter)
-app.use(verifyJWT);
+// app.use(verifyJWT);
 
 connectDb.connectDb()
 app.use(morgan('combined'))
