@@ -1,14 +1,15 @@
 const express = require("express");
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const connectDb = require("./config/db.js");
-const userRouter = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const verifyJWT = require("./middleware/vertifyJWT");
-const credentials = require("./middleware/credentials");
 const cors = require("cors");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bodyParser = require("body-parser");
+const connectDb = require("./config/db.js");
+const userRouter = require("./routes/userRoutes");
+// const verifyJWT = require("./middleware/vertifyJWT");
+const credentials = require("./middleware/credentials");
 const corsOptions = require("./config/corsOptions");
 
 dotenv.config();
@@ -23,7 +24,7 @@ mongoose.set("strictQuery", false);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));

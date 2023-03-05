@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true, minimize: false }
 );
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  // eslint-disable-next-line no-return-await
   return await bcrypt.compare(enteredPassword, this.password);
 };
 const User = mongoose.model("User", userSchema);
