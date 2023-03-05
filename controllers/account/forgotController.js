@@ -1,10 +1,10 @@
-const User = require("../../models/user");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const User = require("../../models/user");
 
 const handleForgotPassword = asyncHandler(async (req, res) => {
-  const { username, email, new_password } = req.body;
-  if (!new_password) {
+  const { username, email, newPassword } = req.body;
+  if (!newPassword) {
     res.status(400).json({ message: "Please enter new password" });
   }
   if (!username && !email) {
@@ -15,10 +15,10 @@ const handleForgotPassword = asyncHandler(async (req, res) => {
     : await User.findOne({ username });
   if (user) {
     const salt = await bcrypt.genSalt(10);
-    const hashPwd = await bcrypt.hash(new_password, salt);
+    const hashPwd = await bcrypt.hash(newPassword, salt);
     user.password = hashPwd;
     await user.save();
-    res.sendStatus(201);
+    res.status(200).json({ message: "Password has been updated" });
   } else {
     res.sendStatus(401);
   }
