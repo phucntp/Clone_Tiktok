@@ -8,6 +8,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const connectDb = require("./config/db.js");
 const userRouter = require("./routes/userRoutes");
+const newsRouter = require("./routes/newsRoutes");
 // const verifyJWT = require("./middleware/vertifyJWT");
 const credentials = require("./middleware/credentials");
 const corsOptions = require("./config/corsOptions");
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/news", newsRouter);
 // app.use(verifyJWT);
 
 connectDb.connectDb();
