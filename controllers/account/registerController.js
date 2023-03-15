@@ -8,11 +8,8 @@ const handleRegister = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Please enter full information" });
   }
   const duplicateEmail = await User.findOne({ email }).exec();
-  console.log(duplicateEmail, "dup");
-  console.log(email, "email");
   const duplicateUsername = await User.findOne({ username }).exec();
   if (duplicateEmail || duplicateUsername) {
-    console.log(123);
     return res.status(400).json({ message: "User already exists" });
   }
   try {
