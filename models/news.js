@@ -7,12 +7,13 @@ const newsSchema = new mongoose.Schema(
     url: { type: String, default: "", require: true },
     music: { type: mongoose.Types.ObjectId, required: false, ref: "Music" },
     description: { type: String, default: "" },
-    isLike: { type: String, default: "0" },
-    following: { type: String, default: "0" },
-    countLike: { type: Number, default: 0 },
-    count: { type: Number, default: 0 },
-    users: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+    like_count: { type: Number, default: 0 },
+    share_count: { type: Number, default: 0 },
+    comment_count: { type: Number, default: 0 },
     comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
+    users_like: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+    users_share: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+    tags: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
     author: { type: mongoose.Types.ObjectId, required: true, ref: "User" }
   },
   { timestamps: true, minimize: false }
