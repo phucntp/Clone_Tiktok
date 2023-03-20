@@ -19,7 +19,6 @@ conn.once("open", () => {
 // Create storage engine
 const storage = new GridFsStorage({
   url: MONGO_URI_SERVER,
-  options: { useUnifiedTopology: true },
   file: (req, file) =>
     new Promise((resolve, reject) => {
       // eslint-disable-next-line consistent-return
