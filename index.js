@@ -10,7 +10,7 @@ const connectDb = require("./config/db.js");
 const userRouter = require("./routes/userRoutes");
 const newsRouter = require("./routes/newsRoutes");
 const videoRouter = require("./routes/videoRoutes");
-// const verifyJWT = require("./middleware/vertifyJWT");
+const verifyJWT = require("./middleware/vertifyJWT");
 const credentials = require("./middleware/credentials");
 const corsOptions = require("./config/corsOptions");
 
@@ -26,8 +26,8 @@ mongoose.set("strictQuery", false);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-// app.use(cors(corsOptions));
-
+app.use(cors(corsOptions));
+//
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/videos", videoRouter);
-// app.use(verifyJWT);
+app.use(verifyJWT);
 
 connectDb.connectDb();
 app.use(morgan("combined"));

@@ -1,6 +1,5 @@
-const User = require("../../models/user");
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
+const User = require("../../models/user");
 const refreshToken = require("../../utils/refreshToken");
 const accessToken = require("../../utils/accessToken");
 
@@ -19,9 +18,8 @@ const handleLogin = asyncHandler(async (req, res) => {
     user.refreshToken = refreshToken(user._id);
     await user.save();
     res.cookie("jwt", refreshToken(user._id), {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None"
+      httpOnly: false,
+      secure: false
     });
     res.json({ accessToken: accessToken(user._id) });
   } else {
