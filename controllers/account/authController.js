@@ -18,8 +18,9 @@ const handleLogin = asyncHandler(async (req, res) => {
     user.refreshToken = refreshToken(user._id);
     await user.save();
     res.cookie("jwt", refreshToken(user._id), {
-      httpOnly: false,
-      secure: false
+      httpOnly: true,
+      secure: true,
+      sameSite: "None"
     });
     res.json({ accessToken: accessToken(user._id) });
   } else {
