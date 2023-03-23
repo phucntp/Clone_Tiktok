@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.set("strictQuery", false);
 
 // and fetch cookies credentials requirement
-app.use(credentials);
+// app.use(credentials);
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
