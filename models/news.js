@@ -8,6 +8,8 @@ const newsSchema = new mongoose.Schema(
     music: { type: mongoose.Types.ObjectId, required: false, ref: "Music" },
     description: { type: String, default: "" },
     like_count: { type: Number, default: 0 },
+    width: { type: Number, default: 0 },
+    height: { type: Number, default: 0 },
     share_count: { type: Number, default: 0 },
     comment_count: { type: Number, default: 0 },
     comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
