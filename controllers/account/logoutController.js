@@ -5,10 +5,10 @@ const User = require("../../models/user");
 const handleLogout = asyncHandler(async (req, res) => {
   const { cookies } = req;
   if (!cookies?.jwt) {
-    res.sendStatus(204);
+    return res.sendStatus(204);
   }
   const refreshToken = cookies.jwt;
-  const user = await User.findOne({ refreshToken }).exec();
+  const user = await User.findOne({ refreshToken });
   if (!user) {
     res.clearCookie("jwt", { secure: true, sameSite: "None" });
     return res.sendStatus(204);
@@ -16,7 +16,7 @@ const handleLogout = asyncHandler(async (req, res) => {
   user.refreshToken = "";
   await user.save();
   res.clearCookie("jwt", { secure: true, sameSite: "None" });
-  res.sendStatus(204);
+  res.sendStatus(200);
 });
 
 module.exports = {
