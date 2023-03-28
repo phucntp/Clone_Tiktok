@@ -10,6 +10,7 @@ const connectDb = require("./config/db.js");
 const userRouter = require("./routes/userRoutes");
 const newsRouter = require("./routes/newsRoutes");
 const videoRouter = require("./routes/videoRoutes");
+const imageRouter = require("./routes/imageRoutes");
 const musicRouter = require("./routes/musicRoutes");
 const tagRouter = require("./routes/tagRouter");
 
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/videos", videoRouter);
+app.use("/api/images", imageRouter);
 app.use("/api/musics", musicRouter);
 app.use("/api/tags", tagRouter);
 app.use(verifyJWT);

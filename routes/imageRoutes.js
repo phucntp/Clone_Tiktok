@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const crypto = require("crypto");
 const { GridFsStorage } = require("multer-gridfs-storage");
+const User = require("../models/user");
 
 const { MONGO_URI_SERVER } = process.env;
 
@@ -11,7 +12,7 @@ const conn = mongoose.createConnection(MONGO_URI_SERVER);
 let gfs;
 conn.once("open", () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-    bucketName: "uploads"
+    bucketName: "uploads/image"
   });
 });
 
@@ -28,7 +29,7 @@ const storage = new GridFsStorage({
         const filename = file.originalname;
         const fileInfo = {
           filename,
-          bucketName: "uploads"
+          bucketName: "uploads/image"
         };
         resolve(fileInfo);
       });
@@ -46,23 +47,40 @@ router.get("/delete/:filename", async (req, res) => {
   return gfs.delete(files[0]._id);
 });
 
-// @desc    Upload video
-// @route   POST /api/videos/upload
+// @desc    Upload image
+// @route   POST /api/images/upload
 // @access  Private
-router.post("/upload", upload.single("video"), async (req, res) => {
+router.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    const profileVideo = `${process.env.SERVER_URL}/api/videos/${req.file.filename}`;
+    const profileImage = `${process.env.SERVER_URL}/api/images/${req.file.filename}`;
 
     res.status(201).send({
-      url: profileVideo
+      url: profileImage
     });
   } catch (err) {
     console.log(err);
   }
 });
 
+router.post("/updateAvatar", async (req, res) => {
+  const { url, username } = req.body;
+  if (!url) {
+    return res.status(400).json({ message: "Please enter url" });
+  }
+  if (!username) {
+    return res.status(400).json({ message: "Please enter username" });
+  }
+  const user = await User.findOne({ username });
+  if (user) {
+    user.avatar = url;
+    await user.save();
+    return res.json({ message: "Updated avatar user" });
+  }
+  return res.sendStatus(401);
+});
+
 // @desc    Get image
-// @route   GET /api/video/:filename
+// @route   GET /api/images/:filename
 // @access  Public
 router.get("/:filename", async (req, res) => {
   // eslint-disable-next-line consistent-return
