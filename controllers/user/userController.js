@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return */
 const asyncHandler = require("express-async-handler");
 const User = require("../../models/user");
+const { convertDataToPagination } = require("../../utils/pagination");
 
 const handleGetAll = asyncHandler(async (req, res) => {
-  const { type, limit } = req.query; // type = 0: foryou type = 1 following
+  const { type, limit, currentPage } = req.query; // type = 0: foryou type = 1 following
   const { cookies } = req;
   let userList = JSON.parse(JSON.stringify(await User.find()));
   if (type) {
@@ -23,10 +24,46 @@ const handleGetAll = asyncHandler(async (req, res) => {
   }
 
   if (userList) {
-    if (limit) {
-      userList = limit < userList.length ? userList.slice(0, limit) : userList;
+    const pagination = {
+      total: userList.length,
+      limit: 0,
+      currentPage: Number(currentPage),
+      totalPage: 1
+    };
+    // eslint-disable-next-line no-restricted-globals
+    if (currentPage === "null" || pagination.currentPage <= 0) {
+      return res.status(404).json({
+        message: `Not found current page, min 1 page`
+      });
     }
-    return res.status(200).json(userList);
+    pagination.currentPage = pagination.currentPage || 1;
+    if (Number(limit) > 0) {
+      pagination.limit = Number(limit);
+      if (Number(limit) < userList.length) {
+        const newListUser = convertDataToPagination(userList, Number(limit));
+        pagination.totalPage = newListUser.length;
+        if (pagination.currentPage > pagination.totalPage) {
+          return res.status(404).json({
+            message: `Not found current page, max ${pagination.totalPage} page and min 1 page`
+          });
+        }
+        userList = newListUser[pagination.currentPage - 1];
+      } else if (pagination.currentPage > pagination.totalPage) {
+        return res.status(404).json({
+          message: "Not found current page, only 1 page"
+        });
+      }
+    } else if (Number(limit) <= 0 || limit === "null") {
+      return res.status(404).json({
+        message: `Not found, max ${pagination.total} limit and min 1 limit`
+      });
+    } else {
+      pagination.limit = userList.length;
+      if (Number(currentPage)) {
+        return res.status(400).json({ message: "limit is require" });
+      }
+    }
+    return res.status(200).json({ pagination, listNews: userList });
   }
   res.sendStatus(404);
   throw new Error("Users is empty");
