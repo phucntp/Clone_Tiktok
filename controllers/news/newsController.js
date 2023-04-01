@@ -133,8 +133,52 @@ const handleFavorite = asyncHandler(async (req, res) => {
   throw new Error("News is empty");
 });
 
+const handleCreateNews = asyncHandler(async (req, res) => {
+  const { title, music, description, tag, url, height, width } = req.body;
+  if (!title || !url || !height || !width) {
+    return res.status(400).json({ message: "Please enter full information" });
+  }
+  const { cookies } = req;
+  if (!cookies?.jwt) {
+    return res.sendStatus(204);
+  }
+  const refreshToken = cookies.jwt;
+  const user = await User.findOne({ refreshToken });
+
+  if (!user) {
+    return res.sendStatus(401);
+  }
+
+  try {
+    const newsCreated = await News.create({
+      title,
+      music,
+      description,
+      tag,
+      author: user._id,
+      url,
+      height,
+      width
+    });
+
+    await User.findOneAndUpdate(
+      { refreshToken },
+      {
+        $push: {
+          news_created: newsCreated
+        }
+      }
+    );
+    return res.status(201).json({ success: `News created` });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
+});
+
 module.exports = {
   handleGetNews,
   handleGetNewsId,
-  handleFavorite
+  handleFavorite,
+  handleCreateNews
 };
