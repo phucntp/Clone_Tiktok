@@ -51,6 +51,14 @@ router.get("/delete/:filename", async (req, res) => {
 // @access  Private
 router.post("/upload", upload.single("video"), async (req, res) => {
   try {
+    // eslint-disable-next-line consistent-return
+    await gfs?.find({ filename: req.file.filename }).toArray((err, files) => {
+      if (files || files.length) {
+        return res.status(400).json({
+          err: "files existed"
+        });
+      }
+    });
     const profileVideo = `${process.env.SERVER_URL}/api/videos/${req.file.filename}`;
 
     res.status(201).send({
