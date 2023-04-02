@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const News = require("../../models/news");
 const User = require("../../models/user");
 const { convertDataToPagination } = require("../../utils/pagination");
+const Tag = require("../../models/tag");
 
 const handleGetNews = asyncHandler(async (req, res) => {
   const { type, limit, currentPage } = req.query; // type = 0: foryou type = 1 following
@@ -134,7 +135,7 @@ const handleFavorite = asyncHandler(async (req, res) => {
 });
 
 const handleCreateNews = asyncHandler(async (req, res) => {
-  const { title, music, description, tag, url, height, width } = req.body;
+  const { title, music, description, tags, url, height, width } = req.body;
   if (!title || !url || !height || !width) {
     return res.status(400).json({ message: "Please enter full information" });
   }
@@ -154,7 +155,7 @@ const handleCreateNews = asyncHandler(async (req, res) => {
       title,
       music,
       description,
-      tag,
+      tags,
       author: user._id,
       url,
       height,
@@ -169,6 +170,15 @@ const handleCreateNews = asyncHandler(async (req, res) => {
         }
       }
     );
+
+    if (tags) {
+      tags.map(async (tag) => {
+        const findTag = await Tag.findOne({ name: tag });
+        if (!findTag) {
+          await Tag.create({ name: tag, author: user._id });
+        }
+      });
+    }
     return res.status(201).json({ success: `News created` });
   } catch (error) {
     console.log(error);

@@ -14,7 +14,7 @@ const newsSchema = new mongoose.Schema(
     comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
     users_like: [{ type: mongoose.Types.ObjectId, ref: "User" }],
     users_share: [{ type: mongoose.Types.ObjectId, ref: "User" }],
-    tags: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
+    tags: [{ type: String, ref: "Tag" }],
     author: { type: mongoose.Types.ObjectId, required: true, ref: "User" }
   },
   { timestamps: true, minimize: false }
