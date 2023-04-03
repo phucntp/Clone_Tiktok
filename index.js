@@ -15,7 +15,7 @@ const musicRouter = require("./routes/musicRoutes");
 const tagRouter = require("./routes/tagRouter");
 
 const verifyJWT = require("./middleware/vertifyJWT");
-// const credentials = require("./middleware/credentials");
+const credentials = require("./middleware/credentials");
 const corsOptions = require("./config/corsOptions");
 
 dotenv.config();
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.set("strictQuery", false);
 
 // and fetch cookies credentials requirement
-// app.use(credentials);
+app.use(credentials);
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
