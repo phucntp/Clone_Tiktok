@@ -52,11 +52,11 @@ router.get("/delete/:filename", async (req, res) => {
 router.post("/upload", upload.single("video"), async (req, res, next) => {
   try {
     // eslint-disable-next-line consistent-return
-    await gfs?.find({ filename: req.file.filename }).toArray((err, files) => {
-      if (files || files.length) {
-        next();
-      }
-    });
+    // await gfs?.find({ filename: req.file.filename }).toArray((err, files) => {
+    //   if (files || files.length) {
+    //     next();
+    //   }
+    // });
     const profileVideo = `${process.env.SERVER_URL}/api/videos/${req.file.filename}`;
 
     res.json({
