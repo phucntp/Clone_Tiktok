@@ -49,21 +49,20 @@ router.get("/delete/:filename", async (req, res) => {
 // @desc    Upload video
 // @route   POST /api/videos/upload
 // @access  Private
-router.post("/upload", upload.single("video"), async (req, res) => {
+router.post("/upload", upload.single("video"), async (req, res, next) => {
   try {
     // eslint-disable-next-line consistent-return
     await gfs?.find({ filename: req.file.filename }).toArray((err, files) => {
       if (files || files.length) {
-        return res.status(400).json({
-          err: "files existed"
-        });
+        next();
       }
     });
     const profileVideo = `${process.env.SERVER_URL}/api/videos/${req.file.filename}`;
 
-    res.status(201).send({
+    res.json({
       url: profileVideo
     });
+    next();
   } catch (err) {
     console.log(err);
   }
