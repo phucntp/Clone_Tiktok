@@ -30,7 +30,20 @@ mongoose.set("strictQuery", false);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(function (req, res, next) {
+  // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://clone-tiktok-fe-git-master-phucntp.vercel.app"
+  );
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 //
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
