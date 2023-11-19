@@ -8,7 +8,9 @@ const Tag = require("../../models/tag");
 const handleGetNews = asyncHandler(async (req, res) => {
   const { type, limit, currentPage } = req.query; // type = 0: foryou type = 1 following
   const { cookies } = req;
-  let newsData = JSON.parse(JSON.stringify(await News.find()));
+  let newsData = JSON.parse(
+    JSON.stringify(await News.find().sort({ updatedAt: "desc" }))
+  );
   if (type) {
     if (!cookies?.jwt) {
       newsData = [];
