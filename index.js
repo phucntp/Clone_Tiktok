@@ -30,7 +30,7 @@ mongoose.set("strictQuery", false);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 //
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
